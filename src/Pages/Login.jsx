@@ -20,13 +20,14 @@ function Login() {
         const obj = {
             name: ob.name,
             email: ob.email,
-            picture: ob.picture
+            picture: ob.picture,
+            status: true
         }
 
         axios.post('http://localhost:8000/user', obj)
             .then((res) => { console.log(res) })
             .catch((err) => { console.log(err) })
-        localStorage.setItem('dataKey', JSON.stringify(obj));
+            localStorage.setItem('dataKey', JSON.stringify(obj));
         dispatch(add(obj))
         navigate('/Chatbox')
         return JSON.parse(jsonPayload);

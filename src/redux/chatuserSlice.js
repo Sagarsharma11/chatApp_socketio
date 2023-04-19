@@ -6,7 +6,6 @@ const chatuserSlice = createSlice({
     initialState,
     reducers:{
         chatUser(state,action){
-            console.log(action,'action user data')
             state[0] = action.payload
         },
     }

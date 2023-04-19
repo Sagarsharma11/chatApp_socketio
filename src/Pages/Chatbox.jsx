@@ -8,7 +8,6 @@ import { chatUser } from '../redux/chatuserSlice';
 
 const Chatbox = () => {
     const [data, setData] = useState([])
-    const [message, setMessage] = useState('');
     const [socket, setSocket] = useState(null);
     const [user, setUser] = useState([])
     const navigate = useNavigate()
@@ -27,6 +26,7 @@ const Chatbox = () => {
         axios.post('http://localhost:8000/userdata',obj)
         .then((res)=>{
             dispatch(fetchUser(res.data))
+            localStorage.setItem('profile', JSON.stringify(res.data));
         })
         .catch((err)=>{console.log(err)})
         // return () => newSocket.disconnect();
@@ -47,6 +47,7 @@ const Chatbox = () => {
                 if (localStorage.USERS !== 'undefined' && localStorage.USERS) {
                     let arr = JSON.parse(localStorage.USERS)
                     let flag = false;
+                    data['status'] = true
                     for (var ele in arr) {
                         if (JSON.stringify(arr[ele]) === JSON.stringify(data)) {
                             flag = true;
@@ -62,6 +63,7 @@ const Chatbox = () => {
                     setUser(storedNames)
                 } else {
                     const arr = [];
+                    data['status'] = true
                     arr.push(data);
                     const jsonArray = JSON.stringify(arr);
                     localStorage.setItem('USERS', jsonArray);
@@ -103,7 +105,7 @@ const Chatbox = () => {
                                 return e['picture'] !== data.picture ? <>
                                     <div class="relative mt-2 mb-2 ml-2">
                                         <img onClick={()=>chatroom(e)} class="w-10 h-10 border cursor-pointer rounded-full" src={e['picture']} alt="" />
-                                        <span class="top-0 left-7 absolute  w-3.5 h-3.5 bg-green-400 border-2 border-white dark:border-gray-800 rounded-full"></span>
+                                        <span class={`top-0 left-7 absolute  w-3.5 h-3.5 ${e.status===true?'bg-green-400':'bg-gray-50'}  border-2 border-white dark:border-gray-800 rounded-full`}></span>
                                     </div>
 
                                 </> : ''
