@@ -13,7 +13,7 @@ module.exports = {
         sender:'#B2B2B2'
       },
       height: {
-        '128': '600px',
+        '128': '500px',
       },
       spacing:{
         '128':'600px'

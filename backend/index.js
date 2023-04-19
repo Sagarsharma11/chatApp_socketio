@@ -2,6 +2,7 @@ const express = require('express');
 const app = express()
 const http = require('http').Server(app);
 const User = require('./Schema/User')
+const Chat = require('./Schema/Chat')
 const dbconnect = require('./db')
 app.use(express.json());
 dbconnect()
@@ -66,6 +67,26 @@ app.post('/userdata', async (req, res) => {
     const result = await User.findOne({ email: req.body.email })
     if (!result) return res.status(501).send({ msg: 'unsuccessfull' })
     res.status(200).send({ msg: 'successfull', user: result, success: true })
+})
+
+app.post('/sendMessage', async (req, res) => {
+    const obj = {
+        sender: req.body.sender,
+        receiver: req.body.receiver,
+        message: req.body.message
+    }
+    const result = await Chat.create(obj)
+    if (!result) return res.status(501).send({ msg: 'messge sent unsuccessfull', user: obj })
+    res.status(200).send({ msg: 'message sent successfull', data: obj, success: true })
+})
+
+app.post('/getMessage', async (req, res) => {
+    const obj = {
+        sender: "6437e37bbdbe953bfb8e9ce4",
+        receiver: "6437e4bebdbe953bfb8e9cf2",
+    }
+    const result = await Chat.find({});
+    res.send(result)
 })
 
 http.listen(port, () => {
